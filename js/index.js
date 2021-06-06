@@ -85,10 +85,10 @@ loadData().then(data => {
         updateLinePlot();
     });
 
-    // click barChart
+//click barChart
     barChart.on('click', onBarClick);
 
-   //Drawing a line plot
+//Drawing line by selected parameters
     function updateLinePlot() {
         const index = data.findIndex(item => item.country === selected);
         if(index === -1) return;
@@ -139,12 +139,12 @@ loadData().then(data => {
             .attr('fill', data => colorScale(data.key));
     }
 
-    //Handling on bar-click event
+    //bar-click event
     function onBarClick(ClickedData, i) {
 
         //If we click on a bar
         if(typeof ClickedData !== "undefined" && highlighted !== ClickedData.key) {
-        //update the view based on a selection
+        //update the view 
             highlighted = ClickedData.key;
             barChart.selectAll('.bar')
                 .transition()
@@ -153,7 +153,7 @@ loadData().then(data => {
             scatterPlot.selectAll('circle').transition()
                 .style('opacity', data => data.region === highlighted ? 0.7 : 0);
         }
-        //If we click on an empty space or on a previously selected bar
+        
         else {
         //reset to default view
             barChart.selectAll('.bar')
@@ -166,7 +166,7 @@ loadData().then(data => {
         }
         d3.event.stopPropagation();
     }
-// circles (points)
+//Setting the attributes of circles
     function handleScatter(selection, xScaler, yScaler, rScaler) {
         selection.attr('r', data => rScaler(parseFloat(data[rParam][year])))
             .attr('cx', data => xScaler(parseFloat(data[xParam][year])))
@@ -187,7 +187,7 @@ loadData().then(data => {
         handleScatter(scatterPlot .selectAll('circle').data(data).transition(), xScaler, yScaler, rScaler);
     }
 
-    //Handling on a circle-click event
+    //circle-click event
     function onKruzho4ekClick(ClickedData, i) {
         selected = ClickedData.country
         scatterPlot.selectAll('circle')
@@ -201,7 +201,7 @@ loadData().then(data => {
     updateScatterPlot();
 });
 
-//Loading the data from the .csv files (template code)
+//Loading the data from the .csv files
 async function loadData() {
     const data = {
         'population': await d3.csv('data/population.csv'),
