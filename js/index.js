@@ -85,10 +85,10 @@ loadData().then(data => {
         updateLinePlot();
     });
 
-//Subscribe to click event of barChart
+    // click barChart
     barChart.on('click', onBarClick);
 
-//Drawing a line plot with the selected parameters
+   //Drawing a line plot
     function updateLinePlot() {
         const index = data.findIndex(item => item.country === selected);
         if(index === -1) return;
@@ -107,7 +107,7 @@ loadData().then(data => {
                 .y(data => yScaler(parseFloat(data[1]))))
     }
 
-//Drawing bars for 4 given regions
+//Drawing bars 
     function updateBar() {
         let meanData = d3.nest()
             .key(data => data['region'])
@@ -129,7 +129,7 @@ loadData().then(data => {
             .transition(), xScaler, yScaler);
     }
 
-//Setting the bar's attributes
+
     function handleBar(selection, xScaler, yScaler) {
         selection.attr("class", "bar")
             .attr("x", data => xScaler(data.key))
@@ -166,7 +166,7 @@ loadData().then(data => {
         }
         d3.event.stopPropagation();
     }
-//Setting the attributes of circles (points)
+// circles (points)
     function handleScatter(selection, xScaler, yScaler, rScaler) {
         selection.attr('r', data => rScaler(parseFloat(data[rParam][year])))
             .attr('cx', data => xScaler(parseFloat(data[xParam][year])))
