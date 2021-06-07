@@ -1,4 +1,4 @@
-//Copying the template code
+
 
 const width = 1000;
 const barWidth = 400;
@@ -85,10 +85,9 @@ loadData().then(data => {
         updateLinePlot();
     });
 
-//click barChart
-    barChart.on('click', onBarClick);
 
-//Drawing line by selected parameters
+    barChart.on('click', BarClick);
+
     function updateLinePlot() {
         const index = data.findIndex(item => item.country === selected);
         if(index === -1) return;
@@ -106,8 +105,7 @@ loadData().then(data => {
                 .x(data => xScaler(new Date(data[0])))
                 .y(data => yScaler(parseFloat(data[1]))))
     }
-
-//Drawing bars 
+ 
     function updateBar() {
         let meanData = d3.nest()
             .key(data => data['region'])
@@ -122,7 +120,7 @@ loadData().then(data => {
 
         handleBar(barChart.selectAll(".bar")
             .data(meanData)
-            .enter().append("rect").on('click', onBarClick), xScaler, yScaler);
+            .enter().append("rect").on('click', BarClick), xScaler, yScaler);
 
         handleBar(barChart.selectAll(".bar")
             .data(meanData)
@@ -139,12 +137,12 @@ loadData().then(data => {
             .attr('fill', data => colorScale(data.key));
     }
 
-    //bar-click event
-    function onBarClick(ClickedData, i) {
 
-        //If we click on a bar
+    function BarClick(ClickedData, i) {
+
+   
         if(typeof ClickedData !== "undefined" && highlighted !== ClickedData.key) {
-        //update the view 
+   
             highlighted = ClickedData.key;
             barChart.selectAll('.bar')
                 .transition()
@@ -155,7 +153,7 @@ loadData().then(data => {
         }
         
         else {
-        //reset to default view
+       
             barChart.selectAll('.bar')
                 .transition()
                 .style('opacity', 1.0);
@@ -166,15 +164,15 @@ loadData().then(data => {
         }
         d3.event.stopPropagation();
     }
-//Setting the attributes of circles
-    function handleScatter(selection, xScaler, yScaler, rScaler) {
+
+    function ha_Scatter(selection, xScaler, yScaler, rScaler) {
         selection.attr('r', data => rScaler(parseFloat(data[rParam][year])))
             .attr('cx', data => xScaler(parseFloat(data[xParam][year])))
             .attr('cy', data => yScaler(parseFloat(data[yParam][year])))
             .attr('fill', data => colorScale(data['region']));
     }
 
-//Drawing a scatterplot
+
     function updateScatterPlot() {
         let rScaler = radiusScale.domain(d3.extent(data.map(data => parseFloat(data[rParam][year]))));
         let xScaler = x.domain(d3.extent(data.map(data => parseFloat(data[xParam][year]))));
@@ -182,13 +180,13 @@ loadData().then(data => {
         xAxis.call(d3.axisBottom(xScaler));
         yAxis.call(d3.axisLeft(yScaler));
 
-        handleScatter(scatterPlot .selectAll('circle').data(data).enter().append('circle').on('click', onKruzho4ekClick), xScaler, yScaler, rScaler);
+        ha_Scatter(scatterPlot .selectAll('circle').data(data).enter().append('circle').on('click', onClick), xScaler, yScaler, rScaler);
 
-        handleScatter(scatterPlot .selectAll('circle').data(data).transition(), xScaler, yScaler, rScaler);
+        ha_Scatter(scatterPlot .selectAll('circle').data(data).transition(), xScaler, yScaler, rScaler);
     }
 
-    //circle-click event
-    function onKruzho4ekClick(ClickedData, i) {
+ 
+    function onClick(ClickedData, i) {
         selected = ClickedData.country
         scatterPlot.selectAll('circle')
             .transition()
@@ -201,7 +199,7 @@ loadData().then(data => {
     updateScatterPlot();
 });
 
-//Loading the data from the .csv files
+
 async function loadData() {
     const data = {
         'population': await d3.csv('data/population.csv'),
